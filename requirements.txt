@@ -1,6 +1,9 @@
-streamlit>=1.30.0
+streamlit>=1.35.0
 pandas>=2.0.0
 openpyxl>=3.1.0
 reportlab>=4.0.0
 pdfplumber>=0.10.0
+pdfminer.six>=20221105
+pypdfium2>=4.0.0
+Pillow>=10.0.0
 altair>=5.0.0
