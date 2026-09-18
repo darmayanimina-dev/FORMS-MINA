@@ -6,9 +6,16 @@ data processing, and formal Excel & PDF report generation.
 
 import io
 import os
+import sys
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import altair as alt
+
+# Ensure repo root is on sys.path for robust cloud imports
+ROOT_DIR = Path(__file__).resolve().parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 from parser_engine import process_opex_file
 from excel_generator import generate_detail_excel
