@@ -175,6 +175,8 @@ if "processed_data" not in st.session_state:
     st.session_state.processed_data = None
 if "current_period" not in st.session_state:
     st.session_state.current_period = "Aug-26"
+if "active_file_signature" not in st.session_state:
+    st.session_state.active_file_signature = None
 
 
 # Top Action Section: File Upload (100% Real Data)
@@ -186,13 +188,21 @@ uploaded_file = st.file_uploader(
 
 # Trigger Process Button if file is uploaded
 if uploaded_file is not None:
-    file_size_kb = len(uploaded_file.getvalue()) / 1024
+    file_bytes = uploaded_file.getvalue()
+    file_size_kb = len(file_bytes) / 1024
+    current_sig = f"{uploaded_file.name}_{len(file_bytes)}"
+
+    # If a new or different file is uploaded, reset previous results
+    if st.session_state.active_file_signature != current_sig:
+        st.session_state.active_file_signature = current_sig
+        st.session_state.processed_data = None
+
     st.caption(f"📁 Berkas terpilih: **{uploaded_file.name}** ({file_size_kb:.1f} KB)")
     
+    # Loading ONLY begins when the user clicks the process button!
     btn_process = st.button("🚀 Proses Data Laporan", type="primary", use_container_width=True)
-    if btn_process or st.session_state.processed_data is None:
+    if btn_process:
         with st.spinner("Membaca dan merekonsiliasi transaksi OPEX..."):
-            file_bytes = uploaded_file.getvalue()
             res = process_opex_file(file_bytes, uploaded_file.name)
             if res["success"]:
                 st.session_state.processed_data = res
@@ -201,8 +211,9 @@ if uploaded_file is not None:
             else:
                 st.error(f"Peringatan: {res.get('error', 'Format tidak dikenali.')}")
 else:
-    # Reset session state when no file is uploaded
+    # Reset session state when file is removed
     st.session_state.processed_data = None
+    st.session_state.active_file_signature = None
 
 
 # Render Processed Dashboard
