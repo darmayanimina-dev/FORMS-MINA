@@ -156,7 +156,7 @@ def generate_rekap_pdf(df_rekap: pd.DataFrame, period: str, total_saldo: float) 
         ],
         [
             Paragraph("<b>Divisi/Unit Kerja:</b>", meta_label_style),
-            Paragraph("FAB (Finance & Accounting)", meta_val_style),
+            Paragraph("SERVICE", meta_val_style),
             Paragraph("<b>Total Beban OPEX:</b>", meta_label_style),
             Paragraph(f"<b>{format_rupiah(total_saldo)}</b>", meta_val_style)
         ]
@@ -252,13 +252,13 @@ def generate_rekap_pdf(df_rekap: pd.DataFrame, period: str, total_saldo: float) 
     rekap_table.setStyle(TableStyle(t_style))
     elements.append(rekap_table)
 
-    # 4. Sign-off / Verification Box
+    # 4. Sign-off / Verification Box (Kiri FAB, Kanan SUAH)
     elements.append(Spacer(1, 20))
     sign_table_data = [
         [
-            Paragraph("<b>Dibuat Oleh:</b><br/><br/><br/><br/>( Staf FAB Operasional )", ParagraphStyle('Sign1', fontName='Helvetica', fontSize=8.5, alignment=1)),
+            Paragraph("<b>Dibuat Oleh:</b><br/><br/><br/><br/>( FAB )", ParagraphStyle('Sign1', fontName='Helvetica-Bold', fontSize=9, alignment=1)),
             Paragraph("", ParagraphStyle('SignSpace')),
-            Paragraph("<b>Disetujui Oleh:</b><br/><br/><br/><br/>( Manager / Pimpinan FAB )", ParagraphStyle('Sign2', fontName='Helvetica', fontSize=8.5, alignment=1))
+            Paragraph("<b>Disetujui Oleh:</b><br/><br/><br/><br/>( SUAH )", ParagraphStyle('Sign2', fontName='Helvetica-Bold', fontSize=9, alignment=1))
         ]
     ]
     sign_table = Table(sign_table_data, colWidths=[200, 123, 200])
